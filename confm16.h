@@ -42,7 +42,7 @@
 
 //LCD_config
 #define RS 0    //ATmega8 for Tower - 2, Pinboard - 0
-#define E 2   //Alwais PB - 2
+#define E 2   //Always PB - 2
 #define LCD_PORT PORTB   //pinboard - PORTB, ATmega8 for Tower PORTD
 #define LCD_DELAY _delay_us (780)
 
