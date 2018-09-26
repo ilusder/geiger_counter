@@ -1,0 +1,15 @@
+*.cof
+*.hex
+*.obj
+*.elf
+*.conf
+*.o
+*.bin
+*.lst
+*.map
+*.srec
+*.eep
+*.lss
+*.o.d
+Makefile
+.DS_STORE
