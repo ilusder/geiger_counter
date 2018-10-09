@@ -17,7 +17,7 @@
 
 int main (void)
 	{
-	uint8_t tmp;
+	uint8_t tmp, count = 0;
 	init_all ();
 	LED_LGT;
 	init_lcd ();
@@ -38,17 +38,25 @@ int main (void)
 		{
 		lcd_clock (1,0);
 //	Out total counts
-//		lcd_line_place (2,4);     //out counts
-//		data_int_lcd (gcount,0);
+		lcd_line_place (2,11);     //out counts
+		data_int_lcd (gcount,0,0);
 		//out CPM
 		lcd_line_place (1,13);
 		tmp = geiger_cpm ();
+		lcd_line_place (1,9);
+		lcd_string ("CPM:");
 		data_int_lcd (tmp,0,0);
+		count++;
+		if (count >= 150)
+		{
+			data_int_com (tmp,0,0);
+			count = 0;
+		}
 		lcd_data (' ');
 		lcd_data (' ');
 		lcd_line_place (2,0);
 		cpm_usv_lcd (tmp);
-		UDR = tmp;
+//		UDR = tmp;
 //		SendByte (tmp);
 //		SEND;
 		DELL;

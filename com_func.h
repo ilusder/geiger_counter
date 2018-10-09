@@ -6,9 +6,9 @@
 #define SEND (UCSRB |= (1<<UDRIE))
 #define RESEN (UCSRB |= (1<<RXEN))
 
-#define BUF_SIZE 8
+#define BUF_SIZE 16
 #define BUF_MASK (BUF_SIZE-1)
-#define IN_BUF_SIZE 8
+#define IN_BUF_SIZE 16
 #define IN_BUF_MASK (IN_BUF_SIZE-1)
 
 volatile char buffer[BUF_SIZE]="";
@@ -71,30 +71,31 @@ ISR (USART_RXC_vect)
 	sei ();
 	}
 
-
-void com_dec_out (char sim)
+void data_int_com(uint32_t count, uint8_t no_zero, uint8_t zeros)
 	{
-	uint8_t tmp = 0;
-	while (sim >= 100)
+	uint32_t par;
+	uint8_t sym;
+	par = 10000000;
+	while (par >= 1)
 		{
-		tmp++;
-		sim -= 100;
+		sym = 0;
+		while (count >= par)
+			{
+			sym++;
+			count -= par;
+			}
+		if (sym || no_zero || par == 1) 
+			{
+			SendByte (sym + 0x30);
+			no_zero = 1;
+			}
+		par /= 10;
+		if (par == 10000 && zeros && count) no_zero=1;
+		if (par == 1000 && zeros && count) 	SendByte ('.');
+		if (par == 1) no_zero=1;
 		}
-	if (tmp)  SendByte (tmp + 0x30);
-	tmp = 0;
-	while (sim >= 10)
-		{
-		tmp++;
-		sim -= 10;
-		}
-	if (tmp)  SendByte (tmp + 0x30);
-	tmp = 0;
-	while (sim >= 1)
-		{
-		tmp++;
-		sim -= 1;
-		}
-	 SendByte (tmp + 0x30);
-	 SendByte (CR);
+	SendStr(" CPM");
+	SendByte ('\n');
 	SEND;
 	}
+

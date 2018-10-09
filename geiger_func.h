@@ -26,7 +26,7 @@ void cpm_usv_lcd (uint32_t ucpm)
 	{
 	ucpm *= CPM_USV_CF;
 	data_int_lcd (ucpm,0,1);
-	lcd_string (" uSv/Hr");
+	lcd_string (" uSH");
 	}
 
 int geiger_cpm (void)
